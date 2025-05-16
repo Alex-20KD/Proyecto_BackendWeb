@@ -1,0 +1,1279 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Sistema de Gestión de Donantes - API",
+        "description": "API para el módulo de donantes del sistema de adopciones de animales",
+        "contact": {
+            "email": "admin@sistema-adopciones.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Servidor de desarrollo"
+        }
+    ],
+    "paths": {
+        "/api/donantes": {
+            "get": {
+                "tags": [
+                    "Donantes"
+                ],
+                "summary": "Obtener todos los donantes",
+                "operationId": "7eb9b956180be2c5a8e54bb1557f991c",
+                "responses": {
+                    "200": {
+                        "description": "Lista de donantes obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Donantes"
+                ],
+                "summary": "Crear un nuevo donante",
+                "operationId": "cc173a32971c5268ab5208f6cd5d4173",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "correo",
+                                    "telefono",
+                                    "direccion",
+                                    "tipo_documento",
+                                    "numero_documento",
+                                    "fecha_registro"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Juan Pérez"
+                                    },
+                                    "correo": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "juan@example.com"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "Calle Principal 123"
+                                    },
+                                    "tipo_documento": {
+                                        "type": "string",
+                                        "example": "DNI"
+                                    },
+                                    "numero_documento": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "fecha_registro": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-06-08"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "Activo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Donante creado exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/donantes/{id}": {
+            "get": {
+                "tags": [
+                    "Donantes"
+                ],
+                "summary": "Obtener un donante por ID",
+                "operationId": "667456b2a9ccd7bb0f1410ba6688790e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Donante obtenido exitosamente"
+                    },
+                    "404": {
+                        "description": "Donante no encontrado"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Donantes"
+                ],
+                "summary": "Actualizar un donante existente",
+                "operationId": "72263a391d5e0fdd0beb32e29d471733",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Juan Pérez Actualizado"
+                                    },
+                                    "correo": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "juan.actualizado@example.com"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "987654321"
+                                    },
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "Calle Secundaria 456"
+                                    },
+                                    "tipo_documento": {
+                                        "type": "string",
+                                        "example": "DNI"
+                                    },
+                                    "numero_documento": {
+                                        "type": "string",
+                                        "example": "87654321"
+                                    },
+                                    "fecha_registro": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-06-08"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "Inactivo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Donante actualizado exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "404": {
+                        "description": "Donante no encontrado"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Donantes"
+                ],
+                "summary": "Eliminar un donante",
+                "operationId": "6b63af5c89b9c8023bb0a45c1bc8fc81",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Donante eliminado exitosamente"
+                    },
+                    "404": {
+                        "description": "Donante no encontrado"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/donantes/email/{email}": {
+            "get": {
+                "tags": [
+                    "Donantes"
+                ],
+                "summary": "Buscar donante por email",
+                "operationId": "12011bee431729266db025d987d460a3",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "description": "Email del donante",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Donante encontrado"
+                    },
+                    "404": {
+                        "description": "Donante no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/donantes/activos": {
+            "get": {
+                "tags": [
+                    "Donantes"
+                ],
+                "summary": "Obtener donantes activos",
+                "operationId": "8d643c176a6e8cb9214c8538795aa68b",
+                "responses": {
+                    "200": {
+                        "description": "Lista de donantes activos obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/historial-colaboraciones": {
+            "get": {
+                "tags": [
+                    "Historial Colaboraciones"
+                ],
+                "summary": "Obtener todo el historial de colaboraciones",
+                "operationId": "025b856866568a52854855ebe2bb669c",
+                "responses": {
+                    "200": {
+                        "description": "Lista de historial de colaboraciones obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Historial Colaboraciones"
+                ],
+                "summary": "Crear una nueva colaboración",
+                "operationId": "a45371c924c1edd941e1637ce888ac5b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "donante_id",
+                                    "tipo_colaboracion",
+                                    "descripcion",
+                                    "fecha_colaboracion"
+                                ],
+                                "properties": {
+                                    "donante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "tipo_colaboracion": {
+                                        "type": "string",
+                                        "example": "Económica"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Donación monetaria para alimento"
+                                    },
+                                    "fecha_colaboracion": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-06-08"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Colaboración creada exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/historial-colaboraciones/{id}": {
+            "get": {
+                "tags": [
+                    "Historial Colaboraciones"
+                ],
+                "summary": "Obtener una colaboración por ID",
+                "operationId": "fe13728571b0a803932ae281a3f8fe34",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la colaboración",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Colaboración obtenida exitosamente"
+                    },
+                    "404": {
+                        "description": "Colaboración no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Historial Colaboraciones"
+                ],
+                "summary": "Actualizar una colaboración existente",
+                "operationId": "1bf952a2d0a261b4b3f5ded1cf953ad5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la colaboración",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "donante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "tipo_colaboracion": {
+                                        "type": "string",
+                                        "example": "Voluntariado"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Descripción actualizada"
+                                    },
+                                    "fecha_colaboracion": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-06-08"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Colaboración actualizada exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "404": {
+                        "description": "Colaboración no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Historial Colaboraciones"
+                ],
+                "summary": "Eliminar una colaboración",
+                "operationId": "813734f37d6d2e58492e32861372fb36",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la colaboración",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Colaboración eliminada exitosamente"
+                    },
+                    "404": {
+                        "description": "Colaboración no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/historial-colaboraciones/donante/{donanteId}": {
+            "get": {
+                "tags": [
+                    "Historial Colaboraciones"
+                ],
+                "summary": "Obtener colaboraciones por donante",
+                "operationId": "26b6d191f49c085ecefab69a24f57f0e",
+                "parameters": [
+                    {
+                        "name": "donanteId",
+                        "in": "path",
+                        "description": "ID del donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de colaboraciones por donante obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/historial-colaboraciones/tipo/{tipo}": {
+            "get": {
+                "tags": [
+                    "Historial Colaboraciones"
+                ],
+                "summary": "Obtener colaboraciones por tipo",
+                "operationId": "11fe0a996633439d1869fd2cf833e71c",
+                "parameters": [
+                    {
+                        "name": "tipo",
+                        "in": "path",
+                        "description": "Tipo de colaboración",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de colaboraciones por tipo obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/informacion-contactos": {
+            "get": {
+                "tags": [
+                    "Información Contacto"
+                ],
+                "summary": "Obtener toda la información de contactos",
+                "operationId": "f34280f03add4e0b866933160f7da624",
+                "responses": {
+                    "200": {
+                        "description": "Lista de información de contactos obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Información Contacto"
+                ],
+                "summary": "Crear nueva información de contacto",
+                "operationId": "642b4583200d360a07296b2f2f46c812",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "donante_id",
+                                    "nombre_contacto",
+                                    "telefono",
+                                    "relacion"
+                                ],
+                                "properties": {
+                                    "donante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "nombre_contacto": {
+                                        "type": "string",
+                                        "example": "Pedro García"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "555-0201"
+                                    },
+                                    "relacion": {
+                                        "type": "string",
+                                        "example": "Hermano"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Información de contacto creada exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/informacion-contactos/{id}": {
+            "get": {
+                "tags": [
+                    "Información Contacto"
+                ],
+                "summary": "Obtener información de contacto por ID",
+                "operationId": "ef8b5b3a89e43787af8dc4af4b9975f5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la información de contacto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Información de contacto obtenida exitosamente"
+                    },
+                    "404": {
+                        "description": "Información de contacto no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Información Contacto"
+                ],
+                "summary": "Actualizar información de contacto existente",
+                "operationId": "560d0a83b0ca339cf073ae81b7a717f7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la información de contacto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "donante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "nombre_contacto": {
+                                        "type": "string",
+                                        "example": "Pedro García Actualizado"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "555-9999"
+                                    },
+                                    "relacion": {
+                                        "type": "string",
+                                        "example": "Primo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Información de contacto actualizada exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "404": {
+                        "description": "Información de contacto no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Información Contacto"
+                ],
+                "summary": "Eliminar información de contacto",
+                "operationId": "9f4373159ffe57217444b67669164f17",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la información de contacto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Información de contacto eliminada exitosamente"
+                    },
+                    "404": {
+                        "description": "Información de contacto no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/informacion-contactos/donante/{donanteId}": {
+            "get": {
+                "tags": [
+                    "Información Contacto"
+                ],
+                "summary": "Obtener información de contacto por donante",
+                "operationId": "42c2a296881fb51d85c7815b81590f70",
+                "parameters": [
+                    {
+                        "name": "donanteId",
+                        "in": "path",
+                        "description": "ID del donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de información de contacto por donante obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/mascotas-donadas": {
+            "get": {
+                "tags": [
+                    "Mascotas Donadas"
+                ],
+                "summary": "Obtener todas las mascotas donadas",
+                "operationId": "48abc94121acb5491a517edf7ef1f488",
+                "responses": {
+                    "200": {
+                        "description": "Lista de mascotas donadas obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Mascotas Donadas"
+                ],
+                "summary": "Crear una nueva mascota donada",
+                "operationId": "fb77616f93452eff162dc1bccac8d012",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "donante_id",
+                                    "mascota_id",
+                                    "fecha_donacion",
+                                    "motivo_donacion"
+                                ],
+                                "properties": {
+                                    "donante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "mascota_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fecha_donacion": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-06-08"
+                                    },
+                                    "motivo_donacion": {
+                                        "type": "string",
+                                        "example": "No puedo cuidarla más"
+                                    },
+                                    "estado_revision": {
+                                        "type": "string",
+                                        "example": "Pendiente"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Mascota donada creada exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/mascotas-donadas/{id}": {
+            "get": {
+                "tags": [
+                    "Mascotas Donadas"
+                ],
+                "summary": "Obtener una mascota donada por ID",
+                "operationId": "ddedca5f3f07487521f1d5fef5a100c6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la mascota donada",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mascota donada obtenida exitosamente"
+                    },
+                    "404": {
+                        "description": "Mascota donada no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Mascotas Donadas"
+                ],
+                "summary": "Actualizar una mascota donada existente",
+                "operationId": "181862286087593044bfc3fb1286cc18",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la mascota donada",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "donante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "mascota_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fecha_donacion": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-06-08"
+                                    },
+                                    "motivo_donacion": {
+                                        "type": "string",
+                                        "example": "Motivo actualizado"
+                                    },
+                                    "estado_revision": {
+                                        "type": "string",
+                                        "example": "Aceptada"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mascota donada actualizada exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "404": {
+                        "description": "Mascota donada no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Mascotas Donadas"
+                ],
+                "summary": "Eliminar una mascota donada",
+                "operationId": "1121265361316ae95d28ec6fff6cad49",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la mascota donada",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mascota donada eliminada exitosamente"
+                    },
+                    "404": {
+                        "description": "Mascota donada no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/mascotas-donadas/donante/{donanteId}": {
+            "get": {
+                "tags": [
+                    "Mascotas Donadas"
+                ],
+                "summary": "Obtener mascotas donadas por donante",
+                "operationId": "0853172f0d64012c092d7b079dde6e52",
+                "parameters": [
+                    {
+                        "name": "donanteId",
+                        "in": "path",
+                        "description": "ID del donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de mascotas donadas por donante obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/mascotas-donadas/estado/{estado}": {
+            "get": {
+                "tags": [
+                    "Mascotas Donadas"
+                ],
+                "summary": "Obtener mascotas donadas por estado",
+                "operationId": "2ecdcfecd0d19bd40042731c0aa32df7",
+                "parameters": [
+                    {
+                        "name": "estado",
+                        "in": "path",
+                        "description": "Estado de revisión",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de mascotas donadas por estado obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/verificaciones-donantes": {
+            "get": {
+                "tags": [
+                    "Verificaciones Donantes"
+                ],
+                "summary": "Obtener todas las verificaciones de donantes",
+                "operationId": "5fa53728a9c113d0bf9bd1b3524e0d1f",
+                "responses": {
+                    "200": {
+                        "description": "Lista de verificaciones de donantes obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Verificaciones Donantes"
+                ],
+                "summary": "Crear nueva verificación de donante",
+                "operationId": "c5eeedcbb3bb2cef148448043d470273",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "donante_id",
+                                    "fecha_verificacion",
+                                    "resultado"
+                                ],
+                                "properties": {
+                                    "donante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fecha_verificacion": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-06-08"
+                                    },
+                                    "resultado": {
+                                        "type": "string",
+                                        "example": "Aprobado"
+                                    },
+                                    "observaciones": {
+                                        "type": "string",
+                                        "example": "Documentos en orden, domicilio verificado"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Verificación de donante creada exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/verificaciones-donantes/{id}": {
+            "get": {
+                "tags": [
+                    "Verificaciones Donantes"
+                ],
+                "summary": "Obtener verificación de donante por ID",
+                "operationId": "799e87831fd2b41b240df37657cc0b39",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la verificación de donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Verificación de donante obtenida exitosamente"
+                    },
+                    "404": {
+                        "description": "Verificación de donante no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Verificaciones Donantes"
+                ],
+                "summary": "Actualizar verificación de donante existente",
+                "operationId": "08b5779644b4fed9144fe1fb14dcc00f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la verificación de donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "donante_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fecha_verificacion": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-06-08"
+                                    },
+                                    "resultado": {
+                                        "type": "string",
+                                        "example": "Observación"
+                                    },
+                                    "observaciones": {
+                                        "type": "string",
+                                        "example": "Requiere documentación adicional"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Verificación de donante actualizada exitosamente"
+                    },
+                    "400": {
+                        "description": "Datos inválidos"
+                    },
+                    "404": {
+                        "description": "Verificación de donante no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Verificaciones Donantes"
+                ],
+                "summary": "Eliminar verificación de donante",
+                "operationId": "aa26d22b2e6843929ae91c8c47acb271",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la verificación de donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Verificación de donante eliminada exitosamente"
+                    },
+                    "404": {
+                        "description": "Verificación de donante no encontrada"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/verificaciones-donantes/donante/{donanteId}": {
+            "get": {
+                "tags": [
+                    "Verificaciones Donantes"
+                ],
+                "summary": "Obtener verificaciones por donante",
+                "operationId": "bd668ff3301c2655f76c3f80da52b9fd",
+                "parameters": [
+                    {
+                        "name": "donanteId",
+                        "in": "path",
+                        "description": "ID del donante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de verificaciones por donante obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/verificaciones-donantes/resultado/{resultado}": {
+            "get": {
+                "tags": [
+                    "Verificaciones Donantes"
+                ],
+                "summary": "Obtener verificaciones por resultado",
+                "operationId": "0013c63753313db98d8b9f9c9d994849",
+                "parameters": [
+                    {
+                        "name": "resultado",
+                        "in": "path",
+                        "description": "Resultado de la verificación",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de verificaciones por resultado obtenida exitosamente"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Donantes",
+            "description": "API Endpoints de donantes"
+        },
+        {
+            "name": "Historial Colaboraciones",
+            "description": "API Endpoints de historial de colaboraciones"
+        },
+        {
+            "name": "Información Contacto",
+            "description": "API Endpoints de información de contacto"
+        },
+        {
+            "name": "Mascotas Donadas",
+            "description": "API Endpoints de mascotas donadas"
+        },
+        {
+            "name": "Verificaciones Donantes",
+            "description": "API Endpoints de verificaciones de donantes"
+        }
+    ]
+}
