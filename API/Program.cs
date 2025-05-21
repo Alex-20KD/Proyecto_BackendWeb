@@ -1,19 +1,55 @@
+// -------------------- PASO 1: AÑADE ESTO AL PRINCIPIO DEL ARCHIVO --------------------
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+// ---- USINGS AÑADIDOS ----
+using Application.Interfaces.Repositories;
+using Application.Interfaces.Services;
+using Application.Services;
+using Infrastructure.Repositories;
+// -------------------------
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// -------------------- PASO 2: AÑADE TU DBCONTEXT AQUÍ --------------------------------
+builder.Services.AddDbContext<AdopcionAnimalDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// ---- LÍNEAS PARA LA INYECCIÓN DE DEPENDENCIAS ----
+// Repositorios
+builder.Services.AddScoped<IAdopcionRepository, AdopcionRepository>();
+builder.Services.AddScoped<ICertificadoPropiedadRepository, CertificadoPropiedadRepository>();
+builder.Services.AddScoped<IContratoAdopcionRepository, ContratoAdopcionRepository>();
+builder.Services.AddScoped<IDocumentacionMascotaRepository, DocumentacionMascotaRepository>();
+builder.Services.AddScoped<ISeguimientoAdopcionRepository, SeguimientoAdopcionRepository>(); // <-- NUEVA LÍNEA
+
+// Servicios
+builder.Services.AddScoped<IAdopcionService, AdopcionService>();
+builder.Services.AddScoped<ICertificadoPropiedadService, CertificadoPropiedadService>();
+builder.Services.AddScoped<IContratoAdopcionService, ContratoAdopcionService>();
+builder.Services.AddScoped<IDocumentacionMascotaService, DocumentacionMascotaService>();
+builder.Services.AddScoped<ISeguimientoAdopcionService, SeguimientoAdopcionService>(); // <-- NUEVA LÍNEA
+// ---------------------------------------------------
+
+// Esto es necesario si vas a usar controladores tipo API.
+builder.Services.AddControllers();
+
+// Para que funcione la documentación de tus futuros endpoints
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
+// AQUÍ DEBERÍAS ELIMINAR EL ENDPOINT DE EJEMPLO "/weatherforecast"
+// Y EN SU LUGAR, MÁS ADELANTE, CREARÁS LOS TUYOS.
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -32,6 +68,9 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+// Esto es necesario para que los controladores funcionen
+app.MapControllers();
 
 app.Run();
 
