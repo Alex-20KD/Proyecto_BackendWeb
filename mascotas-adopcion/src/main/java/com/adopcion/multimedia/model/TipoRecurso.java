@@ -1,4 +1,4 @@
-package com.adopcion.multimedia;
+package com.adopcion.multimedia.model;
 
 public class TipoRecurso {
     private int id;

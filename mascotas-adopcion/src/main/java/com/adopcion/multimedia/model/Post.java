@@ -1,4 +1,4 @@
-package com.adopcion.multimedia;
+package com.adopcion.multimedia.model;
 
 
 
