@@ -13,7 +13,7 @@ public class AdopcionAnimalDbContext : IdentityDbContext <IdentityUser>  {
         }
 
         // Define un DbSet<> por cada entidad que quieras que sea una tabla en la BD
-        public DbSet<Adopcion> Adopcion { get; set; }
+        public DbSet<Adopcion> Adopciones { get; set; }
         public DbSet<ContratoAdopcion> ContratosAdopcion { get; set; }
         public DbSet<DocumentacionMascota> DocumentacionMascotas { get; set; }
         public DbSet<CertificadoPropiedad> CertificadosPropiedad { get; set; }

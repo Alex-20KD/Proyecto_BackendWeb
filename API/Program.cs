@@ -6,7 +6,12 @@ using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Services;
 using Infrastructure.Repositories;
-// -------------------------
+// --- USINGS PARA IDENTIDAD Y JWT ---
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+// ---------------------------------
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,15 +25,42 @@ builder.Services.AddScoped<IAdopcionRepository, AdopcionRepository>();
 builder.Services.AddScoped<ICertificadoPropiedadRepository, CertificadoPropiedadRepository>();
 builder.Services.AddScoped<IContratoAdopcionRepository, ContratoAdopcionRepository>();
 builder.Services.AddScoped<IDocumentacionMascotaRepository, DocumentacionMascotaRepository>();
-builder.Services.AddScoped<ISeguimientoAdopcionRepository, SeguimientoAdopcionRepository>(); // <-- NUEVA LÍNEA
+builder.Services.AddScoped<ISeguimientoAdopcionRepository, SeguimientoAdopcionRepository>();
 
 // Servicios
+builder.Services.AddHttpClient<IAIService, GeminiService>();
 builder.Services.AddScoped<IAdopcionService, AdopcionService>();
 builder.Services.AddScoped<ICertificadoPropiedadService, CertificadoPropiedadService>();
 builder.Services.AddScoped<IContratoAdopcionService, ContratoAdopcionService>();
 builder.Services.AddScoped<IDocumentacionMascotaService, DocumentacionMascotaService>();
-builder.Services.AddScoped<ISeguimientoAdopcionService, SeguimientoAdopcionService>(); // <-- NUEVA LÍNEA
+builder.Services.AddScoped<ISeguimientoAdopcionService, SeguimientoAdopcionService>();
 // ---------------------------------------------------
+
+// --- PASO 1: AÑADIR IDENTIDAD ---
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AdopcionAnimalDbContext>()
+    .AddDefaultTokenProviders();
+
+// --- PASO 2: AÑADIR AUTENTICACIÓN CON JWT ---
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
+
 
 // Esto es necesario si vas a usar controladores tipo API.
 builder.Services.AddControllers();
@@ -48,33 +80,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// AQUÍ DEBERÍAS ELIMINAR EL ENDPOINT DE EJEMPLO "/weatherforecast"
-// Y EN SU LUGAR, MÁS ADELANTE, CREARÁS LOS TUYOS.
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+// --- PASO 3: USAR AUTENTICACIÓN Y AUTORIZACIÓN (¡EL ORDEN IMPORTA!) ---
+app.UseAuthentication();
+app.UseAuthorization();
+// --------------------------------------------------------------------
 
 // Esto es necesario para que los controladores funcionen
 app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
