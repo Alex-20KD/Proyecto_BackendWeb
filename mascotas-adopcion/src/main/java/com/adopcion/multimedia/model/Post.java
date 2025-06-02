@@ -1,71 +1,52 @@
 package com.adopcion.multimedia.model;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que representa una publicación (Post) en el sistema de adopción.
+ * Puede ser sobre una mascota en adopción, un evento, etc.
+ */
+@Entity
+@Table(name = "posts") // Es buena práctica nombrar las tablas en plural
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post {
-    private String id;
-    private String multimediaId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 150)
     private String titulo;
+
+    @Lob // Large Object: indica que puede ser un texto largo.
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String descripcion;
-    private String fechaPublicacion;
-    private String autor;
 
-    // Constructor completo
-    public Post(String id, String multimediaId, String titulo, String descripcion, String fechaPublicacion, String autor) {
-        this.id = id;
-        this.multimediaId = multimediaId;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.fechaPublicacion = fechaPublicacion;
-        this.autor = autor;
-    }
+    @Column(nullable = false)
+    private LocalDateTime fechaPublicacion;
+    
+    // Aquí podrías tener una relación con una entidad Mascota, Usuario, etc.
+    // @ManyToOne
+    // @JoinColumn(name = "mascota_id")
+    // private Mascota mascota;
 
-    // Getters y setters
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getMultimediaId() {
-        return multimediaId;
-    }
-
-    public void setMultimediaId(String multimediaId) {
-        this.multimediaId = multimediaId;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getFechaPublicacion() {
-        return fechaPublicacion;
-    }
-
-    public void setFechaPublicacion(String fechaPublicacion) {
-        this.fechaPublicacion = fechaPublicacion;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
+    // --- Relación Inversa con Multimedia ---
+    @OneToMany(
+        mappedBy = "post", // ¡MUY IMPORTANTE!
+        cascade = CascadeType.ALL,
+        orphanRemoval = true,
+        fetch = FetchType.LAZY
+    )
+    private List<Multimedia> multimedia = new ArrayList<>();
 }
